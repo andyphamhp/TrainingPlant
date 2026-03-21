@@ -1,0 +1,15 @@
+{
+  "name": "training-plant",
+  "version": "1.0.0",
+  "description": "5000m Elevation Gain Ultra Trail Training Plan",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0"
+  }
+}
