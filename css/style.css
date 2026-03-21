@@ -89,6 +89,12 @@ h1 span { display: block; font-size: 0.45em; color: var(--snow); letter-spacing:
 .avp-over { color: var(--summit); }
 .avp-on { color: #7ab372; }
 
+/* COMPLETE BUTTON */
+.complete-btn { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; background: none; border: 1px solid #4a674140; border-radius: 3px; padding: 7px 10px; color: #7ab372; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; width: 100%; text-transform: uppercase; }
+.complete-btn:hover { background: #7ab37215; border-color: #7ab372; color: #7ab372; }
+.day.is-done .complete-btn { display: none; }
+.done-time { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); margin-top: 6px; letter-spacing: 1px; }
+
 .day-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid #3a3028; gap: 4px; flex-wrap: wrap; }
 .day-name { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; }
 .day-type { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-family: 'DM Mono', monospace; letter-spacing: 1px; font-weight: 500; white-space: nowrap; }

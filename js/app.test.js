@@ -5,7 +5,11 @@
  * @jest-environment jsdom
  */
 
-const { computeCountdown, getTodayDateString, highlightToday, toggleDetail } = require('./app');
+const {
+  computeCountdown, getTodayDateString, highlightToday, toggleDetail,
+  getCompletedWorkouts, saveCompletedWorkout, removeCompletedWorkout,
+  markCardDone, unmarkCardDone, STORAGE_KEY
+} = require('./app');
 
 // ─── computeCountdown ───────────────────────────────────────
 
@@ -203,5 +207,121 @@ describe('toggleDetail', () => {
       toggleDetail(btn);
       expect(panel.classList.contains('open')).toBe(false);
     }
+  });
+});
+
+// ─── Workout Completion ─────────────────────────────────────
+
+describe('workout completion - localStorage', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  test('getCompletedWorkouts returns empty object when no data', () => {
+    expect(getCompletedWorkouts()).toEqual({});
+  });
+
+  test('saveCompletedWorkout stores date and timestamp', () => {
+    saveCompletedWorkout('2026-03-21', '2026-03-21T15:30:00Z');
+    const completed = getCompletedWorkouts();
+    expect(completed['2026-03-21']).toBe('2026-03-21T15:30:00Z');
+  });
+
+  test('saveCompletedWorkout handles multiple dates', () => {
+    saveCompletedWorkout('2026-03-20', '2026-03-20T10:00:00Z');
+    saveCompletedWorkout('2026-03-21', '2026-03-21T15:30:00Z');
+    const completed = getCompletedWorkouts();
+    expect(Object.keys(completed).length).toBe(2);
+    expect(completed['2026-03-20']).toBe('2026-03-20T10:00:00Z');
+    expect(completed['2026-03-21']).toBe('2026-03-21T15:30:00Z');
+  });
+
+  test('removeCompletedWorkout deletes the entry', () => {
+    saveCompletedWorkout('2026-03-21', '2026-03-21T15:30:00Z');
+    removeCompletedWorkout('2026-03-21');
+    const completed = getCompletedWorkouts();
+    expect(completed['2026-03-21']).toBeUndefined();
+  });
+
+  test('removeCompletedWorkout does not affect other entries', () => {
+    saveCompletedWorkout('2026-03-20', '2026-03-20T10:00:00Z');
+    saveCompletedWorkout('2026-03-21', '2026-03-21T15:30:00Z');
+    removeCompletedWorkout('2026-03-20');
+    const completed = getCompletedWorkouts();
+    expect(completed['2026-03-20']).toBeUndefined();
+    expect(completed['2026-03-21']).toBe('2026-03-21T15:30:00Z');
+  });
+});
+
+describe('workout completion - DOM', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    document.body.innerHTML = `
+      <div class="day" data-date="2026-03-21">
+        <div class="day-header">
+          <span class="day-name">SAT 21/3 · D2</span>
+          <span class="day-type type-strength">STRENGTH</span>
+        </div>
+        <div class="day-body">
+          <div class="workout-name">Eccentric Quads</div>
+        </div>
+      </div>
+      <div class="day" data-date="2026-03-22">
+        <div class="day-header">
+          <span class="day-name">SUN 22/3 · D3</span>
+          <span class="day-type type-combo">COMBO</span>
+        </div>
+        <div class="day-body">
+          <div class="workout-name">Hill Loop Run</div>
+        </div>
+      </div>
+    `;
+  });
+
+  test('markCardDone adds is-done class and DONE badge', () => {
+    const card = document.querySelector('[data-date="2026-03-21"]');
+    markCardDone(card, '2026-03-21T15:30:00Z');
+
+    expect(card.classList.contains('is-done')).toBe(true);
+    expect(card.querySelector('.done-badge')).not.toBeNull();
+    expect(card.querySelector('.done-badge').textContent).toBe('DONE');
+  });
+
+  test('markCardDone adds completion timestamp', () => {
+    const card = document.querySelector('[data-date="2026-03-21"]');
+    markCardDone(card, '2026-03-21T15:30:00Z');
+
+    const timeEl = card.querySelector('.done-time');
+    expect(timeEl).not.toBeNull();
+    expect(timeEl.textContent).toContain('Completed');
+  });
+
+  test('markCardDone does not duplicate badge on repeated calls', () => {
+    const card = document.querySelector('[data-date="2026-03-21"]');
+    markCardDone(card, '2026-03-21T15:30:00Z');
+    markCardDone(card, '2026-03-21T15:30:00Z');
+
+    expect(card.querySelectorAll('.done-badge').length).toBe(1);
+    expect(card.querySelectorAll('.done-time').length).toBe(1);
+  });
+
+  test('unmarkCardDone removes is-done class, badge, and timestamp', () => {
+    const card = document.querySelector('[data-date="2026-03-21"]');
+    markCardDone(card, '2026-03-21T15:30:00Z');
+    unmarkCardDone(card);
+
+    expect(card.classList.contains('is-done')).toBe(false);
+    expect(card.querySelector('.done-badge')).toBeNull();
+    expect(card.querySelector('.done-time')).toBeNull();
+  });
+
+  test('marking one card done does not affect others', () => {
+    const card1 = document.querySelector('[data-date="2026-03-21"]');
+    const card2 = document.querySelector('[data-date="2026-03-22"]');
+    markCardDone(card1, '2026-03-21T15:30:00Z');
+
+    expect(card1.classList.contains('is-done')).toBe(true);
+    expect(card2.classList.contains('is-done')).toBe(false);
+    expect(card2.querySelector('.done-badge')).toBeNull();
   });
 });
