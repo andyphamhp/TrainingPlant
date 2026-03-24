@@ -1,0 +1,7 @@
+name = "training-plant"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "TRAINING_PLANT_KV"
+id = "00f90c1ee7ea4ee9b33468e0f4b3c4b7"
+preview_id = "33c05fd07a6b460fae19ab699ac32db6"

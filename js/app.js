@@ -3,6 +3,8 @@
 
 const RACE_DATE = '2026-04-04T04:00:00+07:00';
 const STORAGE_KEY = 'training-plant-completed';
+const API_BASE = '/api/workouts';
+const API_KEY = 'c963c3ed2e5fc9e0afd3af1d1e248a4c9598cbad2ffbb10d382aca280a55dd82';
 
 // Countdown to race day: 4/4/2026 04:00 AM (UTC+7)
 function computeCountdown(now, raceDate) {
@@ -128,18 +130,65 @@ function unmarkCardDone(card) {
   if (timeEl) timeEl.remove();
 }
 
+// API sync layer — fire-and-forget background persistence
+async function fetchCompletedFromAPI() {
+  try {
+    const res = await fetch(API_BASE, {
+      headers: { 'X-API-Key': API_KEY },
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+async function syncWorkoutToAPI(date, timestamp) {
+  await fetch(API_BASE, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
+    body: JSON.stringify({ date, timestamp }),
+  });
+}
+
+async function removeWorkoutFromAPI(date) {
+  await fetch(API_BASE, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
+    body: JSON.stringify({ date }),
+  });
+}
+
+async function syncOnLoad() {
+  const apiData = await fetchCompletedFromAPI();
+  if (!apiData) return;
+  const local = getCompletedWorkouts();
+  let merged = { ...local, ...apiData };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+  document.querySelectorAll('.day[data-date]').forEach(card => {
+    const date = card.dataset.date;
+    if (merged[date] && !card.classList.contains('is-done')) {
+      markCardDone(card, merged[date]);
+    } else if (!merged[date] && card.classList.contains('is-done')) {
+      unmarkCardDone(card);
+    }
+  });
+}
+
 function completeWorkout(btn) {
   const card = btn.closest('.day');
   const date = card.dataset.date;
   const timestamp = new Date().toISOString();
   saveCompletedWorkout(date, timestamp);
   markCardDone(card, timestamp);
+  syncWorkoutToAPI(date, timestamp).catch(() => {});
 }
 
 function undoComplete(card) {
   const date = card.dataset.date;
   removeCompletedWorkout(date);
   unmarkCardDone(card);
+  removeWorkoutFromAPI(date).catch(() => {});
 }
 
 function initCompleteButtons() {
@@ -183,6 +232,7 @@ if (typeof document !== 'undefined' && document.getElementById('cd-days')) {
   setInterval(updateCountdown, 1000);
   highlightToday(new Date());
   initCompleteButtons();
+  syncOnLoad().catch(() => {});
 }
 
 // Export for testing
@@ -191,6 +241,7 @@ if (typeof module !== 'undefined' && module.exports) {
     computeCountdown, getTodayDateString, highlightToday, toggleDetail,
     getCompletedWorkouts, saveCompletedWorkout, removeCompletedWorkout,
     markCardDone, unmarkCardDone, completeWorkout, initCompleteButtons,
-    RACE_DATE, STORAGE_KEY
+    fetchCompletedFromAPI, syncWorkoutToAPI, removeWorkoutFromAPI, syncOnLoad,
+    RACE_DATE, STORAGE_KEY, API_BASE, API_KEY
   };
 }
