@@ -8,7 +8,9 @@
 const {
   computeCountdown, getTodayDateString, highlightToday, toggleDetail,
   getCompletedWorkouts, saveCompletedWorkout, removeCompletedWorkout,
-  markCardDone, unmarkCardDone, STORAGE_KEY
+  markCardDone, unmarkCardDone, STORAGE_KEY,
+  fetchCompletedFromAPI, syncWorkoutToAPI, removeWorkoutFromAPI, syncOnLoad,
+  API_BASE
 } = require('./app');
 
 // ─── computeCountdown ───────────────────────────────────────
@@ -323,5 +325,98 @@ describe('workout completion - DOM', () => {
     expect(card1.classList.contains('is-done')).toBe(true);
     expect(card2.classList.contains('is-done')).toBe(false);
     expect(card2.querySelector('.done-badge')).toBeNull();
+  });
+});
+
+// ─── API Sync Layer ─────────────────────────────────────────
+
+describe('API sync layer', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    global.fetch = jest.fn();
+  });
+
+  afterEach(() => {
+    delete global.fetch;
+  });
+
+  test('fetchCompletedFromAPI returns parsed JSON on success', async () => {
+    const mockData = { '2026-03-20': '2026-03-20T10:00:00Z' };
+    global.fetch.mockResolvedValue({ ok: true, json: () => Promise.resolve(mockData) });
+
+    const result = await fetchCompletedFromAPI();
+    expect(result).toEqual(mockData);
+    expect(global.fetch).toHaveBeenCalledWith(API_BASE, expect.objectContaining({
+      headers: expect.objectContaining({ 'X-API-Key': expect.any(String) }),
+    }));
+  });
+
+  test('fetchCompletedFromAPI returns null on network error', async () => {
+    global.fetch.mockRejectedValue(new Error('Network error'));
+
+    const result = await fetchCompletedFromAPI();
+    expect(result).toBeNull();
+  });
+
+  test('syncWorkoutToAPI sends PUT with correct body and headers', async () => {
+    global.fetch.mockResolvedValue({ ok: true });
+
+    await syncWorkoutToAPI('2026-03-21', '2026-03-21T15:30:00Z');
+    expect(global.fetch).toHaveBeenCalledWith(API_BASE, expect.objectContaining({
+      method: 'PUT',
+      headers: expect.objectContaining({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ date: '2026-03-21', timestamp: '2026-03-21T15:30:00Z' }),
+    }));
+  });
+
+  test('removeWorkoutFromAPI sends DELETE with correct body and headers', async () => {
+    global.fetch.mockResolvedValue({ ok: true });
+
+    await removeWorkoutFromAPI('2026-03-21');
+    expect(global.fetch).toHaveBeenCalledWith(API_BASE, expect.objectContaining({
+      method: 'DELETE',
+      headers: expect.objectContaining({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ date: '2026-03-21' }),
+    }));
+  });
+
+  test('syncOnLoad merges API data into localStorage and re-renders cards', async () => {
+    document.body.innerHTML = `
+      <div class="day" data-date="2026-03-20">
+        <div class="day-header"><span class="day-name">D1</span></div>
+        <div class="day-body"></div>
+      </div>
+      <div class="day" data-date="2026-03-21">
+        <div class="day-header"><span class="day-name">D2</span></div>
+        <div class="day-body"></div>
+      </div>
+    `;
+    saveCompletedWorkout('2026-03-21', '2026-03-21T12:00:00Z');
+
+    const apiData = {
+      '2026-03-20': '2026-03-20T10:00:00Z',
+      '2026-03-21': '2026-03-21T15:00:00Z',
+    };
+    global.fetch.mockResolvedValue({ ok: true, json: () => Promise.resolve(apiData) });
+
+    await syncOnLoad();
+
+    const completed = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    expect(completed['2026-03-20']).toBe('2026-03-20T10:00:00Z');
+    // API wins over local
+    expect(completed['2026-03-21']).toBe('2026-03-21T15:00:00Z');
+
+    const card1 = document.querySelector('[data-date="2026-03-20"]');
+    expect(card1.classList.contains('is-done')).toBe(true);
+  });
+
+  test('syncOnLoad handles API failure gracefully (localStorage preserved)', async () => {
+    saveCompletedWorkout('2026-03-21', '2026-03-21T12:00:00Z');
+    global.fetch.mockRejectedValue(new Error('Network error'));
+
+    await syncOnLoad();
+
+    const completed = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    expect(completed['2026-03-21']).toBe('2026-03-21T12:00:00Z');
   });
 });
