@@ -42,6 +42,12 @@ h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 10vw, 96px); 
 h1 span { display: block; font-size: 0.45em; color: var(--snow); letter-spacing: 6px; }
 .tagline { margin-top: 16px; font-size: 13px; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: 1px; }
 
+/* ROUTE TABS */
+.route-tabs { display: flex; justify-content: center; gap: 4px; margin-bottom: 24px; }
+.route-tab { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 10px 24px; border: 1px solid #3a3028; border-radius: 4px; background: var(--rock); color: var(--muted); cursor: pointer; transition: all 0.2s; }
+.route-tab:hover { color: var(--snow); border-color: var(--trail); }
+.route-tab.active { background: var(--trail); color: var(--soil); border-color: var(--trail); font-weight: 500; }
+
 /* COUNTDOWN */
 .countdown { display: flex; justify-content: center; gap: 4px; margin-bottom: 32px; }
 .cd-block { background: var(--rock); border: 1px solid #3a3028; border-radius: 4px; padding: 12px 18px; text-align: center; min-width: 72px; }
@@ -158,6 +164,8 @@ h1 span { display: block; font-size: 0.45em; color: var(--snow); letter-spacing:
   .wrap { padding: 20px 12px 48px; }
   .eyebrow { font-size: 9px; letter-spacing: 2px; }
   .tagline { font-size: 11px; }
+
+  .route-tab { font-size: 11px; padding: 8px 18px; letter-spacing: 1px; }
 
   .countdown { gap: 3px; }
   .cd-block { padding: 10px; min-width: 58px; }

@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UTHG 2026 — Trail 70K Race Day</title>
+<title>UTHG 2026 — Race Day</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -12,10 +12,15 @@
 <div class="wrap">
 
   <header>
-    <div class="eyebrow">Ultra Trail Ha Giang 2026 · Trail 70K · 04/04/2026 · 04:00 AM</div>
-    <h1>5,296m<span>Elevation Gain</span></h1>
-    <div class="tagline">// 68km · 9 checkpoints · Mèo Vạc loop · cut-off 24h //</div>
+    <div class="eyebrow" id="route-eyebrow"></div>
+    <h1 id="route-hero"></h1>
+    <div class="tagline" id="route-tagline"></div>
   </header>
+
+  <div class="route-tabs" id="route-tabs">
+    <button class="route-tab" data-route="70k">Trail 70K</button>
+    <button class="route-tab" data-route="55k">Trail 55K</button>
+  </div>
 
   <div class="countdown" id="countdown-section">
     <div class="cd-block"><div class="cd-val" id="cd-days">--</div><div class="cd-label">Days</div></div>
@@ -24,124 +29,25 @@
     <div class="cd-block"><div class="cd-val" id="cd-secs">--</div><div class="cd-label">Secs</div></div>
   </div>
 
-  <div class="stats-bar">
-    <div class="stat"><div class="stat-val">68</div><div class="stat-label">km</div></div>
-    <div class="stat"><div class="stat-val">5,296</div><div class="stat-label">m D+</div></div>
-    <div class="stat"><div class="stat-val">24h</div><div class="stat-label">Cut-off</div></div>
-    <div class="stat"><div class="stat-val">9</div><div class="stat-label">Checkpoints</div></div>
-  </div>
+  <div class="stats-bar" id="stats-bar"></div>
 
   <!-- ═══════════════ COURSE PROFILE ═══════════════ -->
   <div class="course-section">
     <div class="section-title">COURSE PROFILE</div>
-    <div class="section-sub">// FINAL GPX · 68km loop · Start/Finish SVĐ Mèo Vạc //</div>
+    <div class="section-sub" id="course-sub"></div>
 
-    <div class="course-stats">
-      <div class="course-stat"><div class="course-stat-val">68</div><div class="course-stat-label">km</div></div>
-      <div class="course-stat"><div class="course-stat-val">5,296</div><div class="course-stat-label">m D+</div></div>
-      <div class="course-stat"><div class="course-stat-val">5,295</div><div class="course-stat-label">m D-</div></div>
-      <div class="course-stat"><div class="course-stat-val">1,411</div><div class="course-stat-label">max elev</div></div>
-      <div class="course-stat"><div class="course-stat-val">436</div><div class="course-stat-label">min elev</div></div>
-      <div class="course-stat"><div class="course-stat-val">990</div><div class="course-stat-label">start elev</div></div>
-    </div>
+    <div class="course-stats" id="course-stats"></div>
 
     <div class="course-legend">
       <div class="course-legend-item"><span class="course-legend-swatch" style="background:#E8A03025;border:1px solid #E8A03050"></span> Steep climb zone</div>
       <div class="course-legend-item"><span class="course-legend-swatch" style="background:#C0392B20;border:1px solid #C0392B40"></span> Steep descent zone</div>
-      <div class="course-legend-item"><span class="dot" style="background:#7ab372"></span> Start</div>
-      <div class="course-legend-item"><span class="dot" style="background:var(--summit)"></span> Finish</div>
-      <div class="course-legend-item"><span class="dot" style="background:#7ab372"></span> Checkpoint</div>
+      <div class="course-legend-item"><span class="dot" style="background:#7ab372"></span> Start / Checkpoint</div>
       <div class="course-legend-item"><span class="dot" style="background:var(--sky)"></span> Water Station</div>
+      <div class="course-legend-item"><span class="dot" style="background:var(--summit)"></span> Finish</div>
     </div>
 
     <div class="course-profile-box">
-      <svg viewBox="0 0 880 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
-        <!-- Grid lines -->
-        <line x1="40" y1="153.5" x2="870" y2="153.5" stroke="#3a3028" stroke-width="0.5"/>
-        <text x="36" y="153.5" text-anchor="end" dominant-baseline="middle" fill="#6b5d4f" font-size="8" font-family="DM Mono,monospace">500m</text>
-        <line x1="40" y1="117.6" x2="870" y2="117.6" stroke="#3a3028" stroke-width="0.5"/>
-        <text x="36" y="117.6" text-anchor="end" dominant-baseline="middle" fill="#6b5d4f" font-size="8" font-family="DM Mono,monospace">750m</text>
-        <line x1="40" y1="81.7" x2="870" y2="81.7" stroke="#3a3028" stroke-width="0.5"/>
-        <text x="36" y="81.7" text-anchor="end" dominant-baseline="middle" fill="#6b5d4f" font-size="8" font-family="DM Mono,monospace">1000m</text>
-        <line x1="40" y1="45.9" x2="870" y2="45.9" stroke="#3a3028" stroke-width="0.5"/>
-        <text x="36" y="45.9" text-anchor="end" dominant-baseline="middle" fill="#6b5d4f" font-size="8" font-family="DM Mono,monospace">1250m</text>
-
-        <!-- Checkpoint vertical lines -->
-        <line x1="40.0" y1="10" x2="40.0" y2="175" stroke="#3a3028" stroke-width="0.5" stroke-dasharray="2,4"/>
-        <text x="40.0" y="190" text-anchor="middle" fill="#6b5d4f" font-size="7" font-family="DM Mono,monospace">0</text>
-
-        <line x1="98.3" y1="10" x2="98.3" y2="175" stroke="#7ab372" stroke-width="0.5" stroke-dasharray="2,4"/>
-        <text x="98.3" y="190" text-anchor="middle" fill="#7ab372" font-size="7" font-family="DM Mono,monospace">CP1</text>
-        <text x="98.3" y="197" text-anchor="middle" fill="#6b5d4f" font-size="6" font-family="DM Mono,monospace">5.2</text>
-
-        <line x1="204.5" y1="10" x2="204.5" y2="175" stroke="#7ab372" stroke-width="0.5" stroke-dasharray="2,4"/>
-        <text x="204.5" y="190" text-anchor="middle" fill="#7ab372" font-size="7" font-family="DM Mono,monospace">CP2</text>
-        <text x="204.5" y="197" text-anchor="middle" fill="#6b5d4f" font-size="6" font-family="DM Mono,monospace">13.7</text>
-
-        <line x1="299.4" y1="10" x2="299.4" y2="175" stroke="#7ab372" stroke-width="0.5" stroke-dasharray="2,4"/>
-        <text x="299.4" y="190" text-anchor="middle" fill="#7ab372" font-size="7" font-family="DM Mono,monospace">CP3</text>
-        <text x="299.4" y="197" text-anchor="middle" fill="#6b5d4f" font-size="6" font-family="DM Mono,monospace">21.5</text>
-
-        <line x1="382.4" y1="10" x2="382.4" y2="175" stroke="#7ab372" stroke-width="0.5" stroke-dasharray="2,4"/>
-        <text x="382.4" y="190" text-anchor="middle" fill="#7ab372" font-size="7" font-family="DM Mono,monospace">CP4</text>
-        <text x="382.4" y="197" text-anchor="middle" fill="#6b5d4f" font-size="6" font-family="DM Mono,monospace">28.4</text>
-
-        <line x1="491.6" y1="10" x2="491.6" y2="175" stroke="#7ab372" stroke-width="0.5" stroke-dasharray="2,4"/>
-        <text x="491.6" y="190" text-anchor="middle" fill="#7ab372" font-size="7" font-family="DM Mono,monospace">CP5</text>
-        <text x="491.6" y="197" text-anchor="middle" fill="#6b5d4f" font-size="6" font-family="DM Mono,monospace">37.5</text>
-
-        <line x1="590.6" y1="10" x2="590.6" y2="175" stroke="#7ab372" stroke-width="0.5" stroke-dasharray="2,4"/>
-        <text x="590.6" y="190" text-anchor="middle" fill="#7ab372" font-size="7" font-family="DM Mono,monospace">CP6</text>
-        <text x="590.6" y="197" text-anchor="middle" fill="#6b5d4f" font-size="6" font-family="DM Mono,monospace">45.7</text>
-
-        <line x1="659.9" y1="10" x2="659.9" y2="175" stroke="#7ab372" stroke-width="0.5" stroke-dasharray="2,4"/>
-        <text x="659.9" y="190" text-anchor="middle" fill="#7ab372" font-size="7" font-family="DM Mono,monospace">CP7</text>
-        <text x="659.9" y="197" text-anchor="middle" fill="#6b5d4f" font-size="6" font-family="DM Mono,monospace">51.4</text>
-
-        <line x1="716.8" y1="10" x2="716.8" y2="175" stroke="#7BB3C4" stroke-width="0.5" stroke-dasharray="2,4"/>
-        <text x="716.8" y="190" text-anchor="middle" fill="#7BB3C4" font-size="7" font-family="DM Mono,monospace">WS8</text>
-        <text x="716.8" y="197" text-anchor="middle" fill="#6b5d4f" font-size="6" font-family="DM Mono,monospace">56.1</text>
-
-        <line x1="782.0" y1="10" x2="782.0" y2="175" stroke="#7ab372" stroke-width="0.5" stroke-dasharray="2,4"/>
-        <text x="782.0" y="190" text-anchor="middle" fill="#7ab372" font-size="7" font-family="DM Mono,monospace">CP9</text>
-        <text x="782.0" y="197" text-anchor="middle" fill="#6b5d4f" font-size="6" font-family="DM Mono,monospace">61.6</text>
-
-        <!-- Steep climb zones -->
-        <rect x="58.1" y="10" width="44.6" height="165" fill="#E8A03012"/>
-        <rect x="383.5" y="10" width="108.5" height="165" fill="#E8A03012"/>
-        <rect x="590.8" y="10" width="68.7" height="165" fill="#E8A03012"/>
-        <rect x="721.0" y="10" width="61.5" height="165" fill="#E8A03012"/>
-        <!-- Steep descent zones -->
-        <rect x="305.2" y="10" width="77.1" height="165" fill="#C0392B12"/>
-        <rect x="492.0" y="10" width="98.8" height="165" fill="#C0392B12"/>
-        <rect x="659.5" y="10" width="56.7" height="165" fill="#C0392B12"/>
-        <rect x="782.5" y="10" width="77.1" height="165" fill="#C0392B12"/>
-
-        <!-- Elevation fill -->
-        <polygon points="40.0,175 40.0,83.1 44.1,84.4 48.3,85.4 52.5,86.6 56.6,87.7 60.8,88.3 64.9,89.5 69.1,90.1 73.2,91.2 77.3,92.1 81.5,91.0 85.7,80.1 89.8,64.2 94.0,53.7 98.1,44.5 102.2,42.5 106.4,39.9 110.6,37.7 114.7,40.4 118.8,42.7 123.0,41.3 127.1,40.5 131.3,40.1 135.4,40.2 139.6,43.9 143.8,43.6 147.9,42.9 152.1,44.2 156.2,47.4 160.3,51.6 164.5,56.8 168.7,59.0 172.8,61.7 177.0,60.8 181.1,61.3 185.2,55.6 189.4,53.6 193.6,52.2 197.7,48.5 201.8,48.6 206.0,47.6 210.1,55.3 214.3,62.7 218.4,71.9 222.6,76.7 226.8,83.1 230.9,84.7 235.0,91.9 239.2,86.3 243.3,83.2 247.5,82.9 251.7,85.4 255.8,83.3 260.0,78.5 264.1,72.6 268.2,68.2 272.4,60.9 276.5,59.6 280.7,57.3 284.9,52.3 289.0,48.5 293.1,44.4 297.3,41.6 301.4,43.4 305.6,47.3 309.8,54.1 313.9,59.7 318.1,62.9 322.2,59.7 326.3,59.8 330.5,58.9 334.6,60.2 338.8,63.7 342.9,77.8 347.1,84.6 351.2,92.1 355.4,104.9 359.6,113.0 363.7,122.0 367.9,135.3 372.0,144.0 376.2,156.0 380.3,162.7 384.4,159.7 388.6,160.8 392.8,159.3 396.9,140.2 401.1,121.7 405.2,115.6 409.4,114.2 413.5,104.8 417.7,103.6 421.8,99.3 426.0,89.8 430.1,90.1 434.2,94.8 438.4,100.3 442.6,94.7 446.7,96.2 450.9,101.5 455.0,94.4 459.1,85.4 463.3,79.5 467.4,78.4 471.6,76.6 475.8,74.8 479.9,67.0 484.1,66.2 488.2,73.2 492.4,72.5 496.5,69.6 500.7,73.1 504.8,79.3 508.9,88.4 513.1,93.0 517.2,98.2 521.4,102.6 525.5,108.1 529.7,113.2 533.8,121.3 538.0,127.4 542.1,137.9 546.3,144.9 550.5,139.5 554.6,142.9 558.8,140.2 562.9,141.5 567.0,141.5 571.2,147.4 575.4,150.0 579.5,150.9 583.6,148.4 587.8,154.5 592.0,158.8 596.1,157.0 600.2,157.1 604.4,158.6 608.6,156.7 612.7,152.4 616.8,147.6 621.0,144.4 625.1,136.4 629.3,120.6 633.4,113.2 637.6,104.2 641.8,92.3 645.9,88.4 650.0,79.4 654.2,69.6 658.4,71.9 662.5,68.4 666.6,63.5 670.8,55.3 675.0,55.5 679.1,51.6 683.2,47.3 687.4,42.5 691.6,33.9 695.7,46.0 699.9,55.0 704.0,78.9 708.2,71.3 712.3,85.2 716.4,82.6 720.6,75.1 724.8,75.8 728.9,63.0 733.0,49.9 737.2,43.6 741.4,45.8 745.5,42.3 749.6,41.5 753.8,39.4 758.0,46.4 762.1,43.0 766.2,47.7 770.4,46.9 774.5,39.3 778.7,41.7 782.9,42.8 787.0,36.5 791.1,33.0 795.3,33.6 799.5,28.2 803.6,34.3 807.8,34.7 811.9,31.8 816.1,31.7 820.2,27.2 824.3,23.1 828.5,23.8 832.6,29.6 836.8,36.7 840.9,37.9 845.1,44.0 849.2,51.4 853.4,59.9 857.5,73.9 861.7,83.5 865.9,83.6 870.0,83.3 870.0,175" fill="url(#elevGrad)" opacity="0.6"/>
-
-        <!-- Elevation line -->
-        <polyline points="40.0,83.1 44.1,84.4 48.3,85.4 52.5,86.6 56.6,87.7 60.8,88.3 64.9,89.5 69.1,90.1 73.2,91.2 77.3,92.1 81.5,91.0 85.7,80.1 89.8,64.2 94.0,53.7 98.1,44.5 102.2,42.5 106.4,39.9 110.6,37.7 114.7,40.4 118.8,42.7 123.0,41.3 127.1,40.5 131.3,40.1 135.4,40.2 139.6,43.9 143.8,43.6 147.9,42.9 152.1,44.2 156.2,47.4 160.3,51.6 164.5,56.8 168.7,59.0 172.8,61.7 177.0,60.8 181.1,61.3 185.2,55.6 189.4,53.6 193.6,52.2 197.7,48.5 201.8,48.6 206.0,47.6 210.1,55.3 214.3,62.7 218.4,71.9 222.6,76.7 226.8,83.1 230.9,84.7 235.0,91.9 239.2,86.3 243.3,83.2 247.5,82.9 251.7,85.4 255.8,83.3 260.0,78.5 264.1,72.6 268.2,68.2 272.4,60.9 276.5,59.6 280.7,57.3 284.9,52.3 289.0,48.5 293.1,44.4 297.3,41.6 301.4,43.4 305.6,47.3 309.8,54.1 313.9,59.7 318.1,62.9 322.2,59.7 326.3,59.8 330.5,58.9 334.6,60.2 338.8,63.7 342.9,77.8 347.1,84.6 351.2,92.1 355.4,104.9 359.6,113.0 363.7,122.0 367.9,135.3 372.0,144.0 376.2,156.0 380.3,162.7 384.4,159.7 388.6,160.8 392.8,159.3 396.9,140.2 401.1,121.7 405.2,115.6 409.4,114.2 413.5,104.8 417.7,103.6 421.8,99.3 426.0,89.8 430.1,90.1 434.2,94.8 438.4,100.3 442.6,94.7 446.7,96.2 450.9,101.5 455.0,94.4 459.1,85.4 463.3,79.5 467.4,78.4 471.6,76.6 475.8,74.8 479.9,67.0 484.1,66.2 488.2,73.2 492.4,72.5 496.5,69.6 500.7,73.1 504.8,79.3 508.9,88.4 513.1,93.0 517.2,98.2 521.4,102.6 525.5,108.1 529.7,113.2 533.8,121.3 538.0,127.4 542.1,137.9 546.3,144.9 550.5,139.5 554.6,142.9 558.8,140.2 562.9,141.5 567.0,141.5 571.2,147.4 575.4,150.0 579.5,150.9 583.6,148.4 587.8,154.5 592.0,158.8 596.1,157.0 600.2,157.1 604.4,158.6 608.6,156.7 612.7,152.4 616.8,147.6 621.0,144.4 625.1,136.4 629.3,120.6 633.4,113.2 637.6,104.2 641.8,92.3 645.9,88.4 650.0,79.4 654.2,69.6 658.4,71.9 662.5,68.4 666.6,63.5 670.8,55.3 675.0,55.5 679.1,51.6 683.2,47.3 687.4,42.5 691.6,33.9 695.7,46.0 699.9,55.0 704.0,78.9 708.2,71.3 712.3,85.2 716.4,82.6 720.6,75.1 724.8,75.8 728.9,63.0 733.0,49.9 737.2,43.6 741.4,45.8 745.5,42.3 749.6,41.5 753.8,39.4 758.0,46.4 762.1,43.0 766.2,47.7 770.4,46.9 774.5,39.3 778.7,41.7 782.9,42.8 787.0,36.5 791.1,33.0 795.3,33.6 799.5,28.2 803.6,34.3 807.8,34.7 811.9,31.8 816.1,31.7 820.2,27.2 824.3,23.1 828.5,23.8 832.6,29.6 836.8,36.7 840.9,37.9 845.1,44.0 849.2,51.4 853.4,59.9 857.5,73.9 861.7,83.5 865.9,83.6 870.0,83.3" fill="none" stroke="#E8A030" stroke-width="1.5" stroke-linejoin="round"/>
-
-        <defs>
-          <linearGradient id="elevGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#E8A030" stop-opacity="0.4"/>
-            <stop offset="100%" stop-color="#E8A030" stop-opacity="0.05"/>
-          </linearGradient>
-        </defs>
-
-        <!-- Start / Finish markers -->
-        <circle cx="40.0" cy="83.1" r="3" fill="#7ab372"/>
-        <text x="46.0" y="77.1" fill="#7ab372" font-size="8" font-family="DM Mono,monospace">START 990m</text>
-        <circle cx="870.0" cy="83.3" r="3" fill="#E8A030"/>
-        <text x="864.0" y="77.3" fill="#E8A030" font-size="8" font-family="DM Mono,monospace" text-anchor="end">FINISH 989m</text>
-        <!-- Highest point -->
-        <circle cx="827.0" cy="22.8" r="2.5" fill="#E8A030"/>
-        <text x="811.0" y="18.8" fill="#E8A030" font-size="7" font-family="DM Mono,monospace">1411m</text>
-        <!-- Lowest point -->
-        <circle cx="380.3" cy="162.7" r="2.5" fill="#7BB3C4"/>
-        <text x="385.3" y="172.7" fill="#7BB3C4" font-size="7" font-family="DM Mono,monospace">436m</text>
-      </svg>
+      <svg id="elevation-svg" viewBox="0 0 880 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;"></svg>
     </div>
 
     <!-- Checkpoint Segment Breakdown -->
@@ -151,74 +57,14 @@
         <thead>
           <tr><th>Segment</th><th>Dist</th><th>D+</th><th>D-</th><th>Elev Range</th><th>Strategy</th></tr>
         </thead>
-        <tbody>
-          <tr><td><b>Start → CP1</b></td><td>5.2km</td><td><b>380m</b></td><td>70m</td><td>990–1,262m</td><td>Downhill first 2km then big climb. Easy start, power hike up.</td></tr>
-          <tr><td><b>CP1 → CP2</b></td><td>8.5km</td><td>416m</td><td>470m</td><td>1,138–1,309m</td><td>Ridgeline rollers. Find rhythm. Easy pace. Eat first gel.</td></tr>
-          <tr><td><b>CP2 → CP3</b></td><td>7.8km</td><td>630m</td><td>610m</td><td>929–1,286m</td><td>Technical rollers with net climb. Power hike. Eat + drink.</td></tr>
-          <tr><td><b>CP3 → CP4</b></td><td>6.7km</td><td>250m</td><td><b>1,060m</b></td><td>436–1,283m</td><td>MASSIVE DROP to valley floor (436m). Short steps. Core tight. Bag drop here.</td></tr>
-          <tr><td><b>CP4 → CP5</b></td><td>9.1km</td><td><b>1,120m</b></td><td>510m</td><td>443–1,123m</td><td>Biggest climb of the race. Sustained grind. Stay fueled. Power hike only.</td></tr>
-          <tr><td><b>CP5 → CP6</b></td><td>8.1km</td><td>320m</td><td><b>905m</b></td><td>469–1,090m</td><td>Long descent to valley. Careful on quads. Recover for CP6→CP7 monster.</td></tr>
-          <tr><td><b>CP6 → CP7</b></td><td>5.7km</td><td><b>690m</b></td><td>110m</td><td>461–1,101m</td><td>MONSTER CLIMB. Hands on thighs. Survive. Bag drop + DNF bus here.</td></tr>
-          <tr><td><b>CP7 → WS8</b></td><td>5.2km</td><td>565m</td><td>630m</td><td>934–1,336m</td><td>High altitude rollers. Keep eating. Headlamp ON.</td></tr>
-          <tr><td><b>WS8 → CP9</b></td><td>5.3km</td><td>645m</td><td>350m</td><td>1,002–1,329m</td><td>Final climb to peak. Mental game. Last caffeine gel here.</td></tr>
-          <tr><td><b>CP9 → Finish</b></td><td>~7.1km</td><td>280m</td><td><b>580m</b></td><td>989–1,411m</td><td>Peak at km 65 (1,411m) then final descent. Smile. You made it.</td></tr>
-        </tbody>
+        <tbody id="segments-tbody"></tbody>
       </table>
     </div>
 
     <!-- Danger Zones -->
-    <div class="danger-grid">
-      <div>
-        <div class="danger-col-title climb">Steepest Climbs</div>
-        <div class="danger-item">
-          <div class="danger-km">CP4 → CP5</div>
-          <div class="danger-stats climb">+1,120m · 9.1km</div>
-          <div class="danger-note"><b>Biggest climb.</b> From valley floor 436m up to 1,123m. Power hike only. Tay chống đùi. Eat before + during.</div>
-        </div>
-        <div class="danger-item">
-          <div class="danger-km">CP6 → CP7</div>
-          <div class="danger-stats climb">+690m · 5.7km</div>
-          <div class="danger-note"><b>Monster wall.</b> Where races are won/lost. 12% avg grade. Survival mode. Caffeine gel.</div>
-        </div>
-        <div class="danger-item">
-          <div class="danger-km">WS8 → CP9</div>
-          <div class="danger-stats climb">+645m · 5.3km</div>
-          <div class="danger-note"><b>Late climb in dark.</b> 12% avg. Mental push. Last caffeine. Keep moving.</div>
-        </div>
-        <div class="danger-item">
-          <div class="danger-km">CP2 → CP3</div>
-          <div class="danger-stats climb">+630m · 7.8km</div>
-          <div class="danger-note"><b>Technical rollers.</b> Undulating terrain. Don't burn matches early. Save legs.</div>
-        </div>
-      </div>
-      <div>
-        <div class="danger-col-title descent">Steepest Descents</div>
-        <div class="danger-item">
-          <div class="danger-km">CP3 → CP4</div>
-          <div class="danger-stats descent">-1,060m · 6.7km</div>
-          <div class="danger-note"><b>Massive drop.</b> From 1,283m to 436m. Cadence cao, midfoot. Core tight. Ăn trước descent.</div>
-        </div>
-        <div class="danger-item">
-          <div class="danger-km">CP5 → CP6</div>
-          <div class="danger-stats descent">-905m · 8.1km</div>
-          <div class="danger-note"><b>Long descent.</b> Save quads — CP6→CP7 monster climb is next. Steady pace.</div>
-        </div>
-        <div class="danger-item">
-          <div class="danger-km">CP7 → WS8</div>
-          <div class="danger-stats descent">-630m · 5.2km</div>
-          <div class="danger-note"><b>Night descent.</b> Headlamp critical. Dead quads by now. Short steps. Arms out.</div>
-        </div>
-        <div class="danger-item">
-          <div class="danger-km">CP9 → Finish</div>
-          <div class="danger-stats descent">-580m · 7.1km</div>
-          <div class="danger-note"><b>Final descent.</b> After peak at 1,411m. Don't fall. Smile at finish line.</div>
-        </div>
-      </div>
-    </div>
+    <div class="danger-grid" id="danger-grid"></div>
 
-    <div class="nutr-tip" style="margin-top:16px">
-      <b>Race pattern:</b> Climb to CP1 (5.2km) → ridge rollers to CP2 (13.7km) → technical rollers to CP3 (21.5km) → <b>MASSIVE DROP to CP4</b> (28.4km, valley floor 436m) → biggest climb to CP5 (37.5km) → long descent to CP6 (45.7km) → <b>MONSTER CLIMB to CP7</b> (51.4km) → rollers to WS8 (56.1km) → final climb to CP9 (61.6km) → peak at 1,411m → descent to finish (68km).
-    </div>
+    <div class="nutr-tip" style="margin-top:16px" id="race-pattern"></div>
   </div>
 
   <!-- ═══════════════ RACE STRATEGY ═══════════════ -->
@@ -233,52 +79,16 @@
         <thead>
           <tr><th>Checkpoint</th><th>Km</th><th>Cut-off</th><th>Target Arrival</th><th>Buffer</th><th>Notes</th></tr>
         </thead>
-        <tbody>
-          <tr><td><b>Start</b></td><td>0</td><td>04:00</td><td>04:00</td><td>—</td><td>Race start. SVĐ Mèo Vạc.</td></tr>
-          <tr><td><b>CP4</b></td><td>28.4</td><td><b>13:00</b></td><td>~11:30</td><td>~1h30</td><td>9h for 28km + 1,676m D+. Valley floor. Bag drop. COT 1.</td></tr>
-          <tr><td><b>CP7</b></td><td>51.4</td><td><b>20:00</b></td><td>~18:30</td><td>~1h30</td><td>7h for 23km + 2,130m D+. Bag drop. DNF bus. COT 2.</td></tr>
-          <tr><td><b>WS8</b></td><td>56.1</td><td><b>22:00</b></td><td>~20:00</td><td>~2h00</td><td>2h for 4.7km + 565m D+. Water only. DNF bus. COT 3.</td></tr>
-          <tr><td><b>Finish</b></td><td>68</td><td><b>04:00</b></td><td>~01:00</td><td>~3h00</td><td>24h total. 6h for 12km + 925m D+. You made it.</td></tr>
-        </tbody>
+        <tbody id="cutoffs-tbody"></tbody>
       </table>
     </div>
 
     <!-- Mental Blocks -->
     <div class="elev-title" style="margin: 20px 0 12px;">// break the race into 3 blocks //</div>
-    <div class="strategy-grid">
-      <div class="strategy-card block-1">
-        <div class="strategy-badge">BLOCK 1</div>
-        <div class="strategy-title">Start → CP4</div>
-        <div class="strategy-meta">28.4km · 1,676m D+ · 2,210m D- · ~7h30</div>
-        <div class="strategy-desc">
-          <b>Mục tiêu: đừng cháy sớm.</b> 42% quãng đường nhưng terrain đa dạng. Bắt đầu dễ, leo CP1 bằng power hike. Ridge rollers đến CP2-CP3 giữ Z2. Đoạn xuống CP4 là descent lớn nhất race (-1,060m) — bước ngắn, core tight, đừng braking gót. Đến CP4 phải cảm thấy còn 70% năng lượng.
-        </div>
-        <div class="strategy-tip"><b>Key:</b> Nếu đến CP4 mà thấy mệt = đã chạy quá nhanh block 1. CP4 có bag drop — thay gear nếu cần.</div>
-      </div>
-      <div class="strategy-card block-2">
-        <div class="strategy-badge">BLOCK 2</div>
-        <div class="strategy-title">CP4 → CP7</div>
-        <div class="strategy-meta">23.0km · 2,130m D+ · 1,525m D- · ~7h00</div>
-        <div class="strategy-desc">
-          <b>Mục tiêu: survive the monsters.</b> Đoạn khó nhất race. CP4→CP5 là climb lớn nhất (+1,120m), sau đó xuống CP6 rồi MONSTER CLIMB lên CP7 (+690m). Đây là nơi thắng/thua. Ăn liên tục. Power hike tất cả các đoạn lên. Không chạy lên dốc. CP7 có DNF bus — đừng lên.
-        </div>
-        <div class="strategy-tip"><b>Key:</b> Ăn GEL trước mỗi đoạn climb. Caffeine gel đầu tiên ở km 28-30 (giữa climb CP4→CP5). Thêm 1 gel caffeine ở km 42-45.</div>
-      </div>
-      <div class="strategy-card block-3">
-        <div class="strategy-badge">BLOCK 3</div>
-        <div class="strategy-title">CP7 → Finish</div>
-        <div class="strategy-meta">16.6km · 1,490m D+ · 1,560m D- · ~6h30</div>
-        <div class="strategy-desc">
-          <b>Mục tiêu: keep moving forward.</b> Headlamp ON từ CP6/CP7. Rollers to WS8, final climb to CP9, peak ở km 65 (1,411m), rồi descent to finish. Đoạn này chạy bằng tinh thần. Caffeine gel cuối ở km 55-58. Không dừng quá 2 phút tại mỗi CP. Mỗi bước đều đưa về đích.
-        </div>
-        <div class="strategy-tip"><b>Key:</b> Night running. Mang 2 headlamp (1 backup). Pin dự phòng. Áo giữ nhiệt vì nhiệt độ ban đêm ở 1,000m+ sẽ lạnh.</div>
-      </div>
-    </div>
+    <div class="strategy-grid" id="strategy-grid"></div>
 
     <!-- Night Running Plan -->
-    <div class="nutr-tip" style="margin-top:16px">
-      <b>Night plan:</b> Mặt trời lặn ~18:00. Nếu đến CP6 (km 45.7) lúc ~17:00-18:00 → headlamp ON từ CP6 onwards. Khoảng 10-12h chạy đêm (CP6 → Finish). Mang: <b>headlamp chính (300+ lumens)</b> + backup + pin dự trữ. Đêm lạnh ở 1,000m+ → <b>áo gió/giữ nhiệt bắt buộc</b>. Nhớ: chạy đêm chậm hơn 15-20% so với ban ngày.
-    </div>
+    <div class="nutr-tip" style="margin-top:16px" id="night-plan"></div>
 
     <!-- Amenities at CPs -->
     <div class="course-profile-box" style="margin-top:16px">
@@ -287,17 +97,7 @@
         <thead>
           <tr><th>CP</th><th>Km</th><th>Water</th><th>Fruit</th><th>Food</th><th>Bag Drop</th><th>DNF Bus</th></tr>
         </thead>
-        <tbody>
-          <tr><td><b>CP1</b></td><td>5.2</td><td>Yes</td><td>Yes</td><td>—</td><td>—</td><td>—</td></tr>
-          <tr><td><b>CP2</b></td><td>13.7</td><td>Yes</td><td>Yes</td><td>—</td><td>—</td><td>—</td></tr>
-          <tr><td><b>CP3</b></td><td>21.5</td><td>Yes</td><td>Yes</td><td>Yes</td><td>—</td><td>Yes</td></tr>
-          <tr><td><b>CP4</b></td><td>28.4</td><td>Yes</td><td>Yes</td><td>Yes</td><td><b>Yes</b></td><td>Yes</td></tr>
-          <tr><td><b>CP5</b></td><td>37.5</td><td>Yes</td><td>Yes</td><td>Yes</td><td>—</td><td>—</td></tr>
-          <tr><td><b>CP6</b></td><td>45.7</td><td>Yes</td><td>Yes</td><td>Yes</td><td>—</td><td>—</td></tr>
-          <tr><td><b>CP7</b></td><td>51.4</td><td>Yes</td><td>Yes</td><td>Yes</td><td><b>Yes</b></td><td>Yes</td></tr>
-          <tr><td><b>WS8</b></td><td>56.1</td><td>Yes</td><td>—</td><td>—</td><td>—</td><td>Yes</td></tr>
-          <tr><td><b>CP9</b></td><td>61.6</td><td>Yes</td><td>Yes</td><td>Yes</td><td>—</td><td>—</td></tr>
-        </tbody>
+        <tbody id="amenities-tbody"></tbody>
       </table>
     </div>
   </div>
@@ -308,6 +108,7 @@
     <div class="section-sub">// fuel the engine · protect the gut · race-day ready //</div>
 
     <div class="nutr-phases">
+      <!-- PRE-RACE (shared) -->
       <div class="nutr-phase">
         <div class="nutr-phase-header">
           <div class="nutr-phase-badge">PRE-RACE</div>
@@ -317,12 +118,12 @@
           </div>
         </div>
         <div class="nutr-row"><div class="nutr-row-label">3/4 cả ngày</div><div class="nutr-row-desc"><b>Carb load 18h:</b> cơm trắng / mì / khoai. Target <b>8–10g carb/kg</b>. Ít chất xơ, ít dầu mỡ. Uống đủ nước + điện giải.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">2h30 sáng</div><div class="nutr-row-desc"><b>Ăn sáng:</b> 60–80g carb dễ tiêu — cơm trắng + mật ong hoặc bánh mì + jam. Café nhẹ nếu quen. <b>Không thử mới.</b></div></div>
-        <div class="nutr-row"><div class="nutr-row-label">Hydration</div><div class="nutr-row-desc"><b>2× 500ml soft flask:</b> 1 bình Drink Mix 160 (40g carb) + 1 bình plain water (backup nếu bụng khó chịu). <b>150–200ml mỗi 20 phút.</b> Nóng → 250ml.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">Aid stations</div><div class="nutr-row-desc"><b>Không skip checkpoint.</b> Lấy chuối + muối. <b>Refill 1 bình Drink Mix 160 + 1 bình nước lã</b> tại mỗi CP. 30 giây ở CP save 30 phút cuối race.</div></div>
-        <div class="nutr-tip"><b>Gear cần mang:</b> 6× Maurten Gel 100 (non-caf) + 3× Maurten Gel 100 CAF 100 + <b>4× Maurten Drink Mix 160 sachets</b> + <b>15× SaltStick caps</b> + 1× Hammer Recoverite + 2× 500ml soft flask. Chuối lấy tại checkpoint.</div>
+        <div class="nutr-row"><div class="nutr-row-label">Ăn sáng</div><div class="nutr-row-desc"><b>60–80g carb dễ tiêu</b> — cơm trắng + mật ong hoặc bánh mì + jam. Café nhẹ nếu quen. <b>Không thử mới.</b> Ăn 1.5h trước start.</div></div>
+        <div class="nutr-row"><div class="nutr-row-label">Hydration</div><div class="nutr-row-desc"><b>2× 500ml soft flask:</b> 1 bình Drink Mix 160 (40g carb) + 1 bình plain water. <b>150–200ml mỗi 20 phút.</b> Nóng → 250ml.</div></div>
+        <div class="nutr-row"><div class="nutr-row-label">Aid stations</div><div class="nutr-row-desc"><b>Không skip checkpoint.</b> Lấy chuối + muối. <b>Refill 1 bình Drink Mix 160 + 1 bình nước lã</b> tại mỗi CP.</div></div>
       </div>
 
+      <!-- INVENTORY (shared) -->
       <div class="nutr-phase">
         <div class="nutr-phase-header">
           <div class="nutr-phase-badge">INVENTORY</div>
@@ -331,15 +132,15 @@
             <div class="nutr-phase-dates">Checklist — pack đêm 3/4</div>
           </div>
         </div>
-        <div class="nutr-row"><div class="nutr-row-label">Gel 100</div><div class="nutr-row-desc"><b>6 gói</b> — 150g carb tổng. Non-caffeine. Dùng tại km 8, 15, 22, 35, 48, 60.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">CAF 100</div><div class="nutr-row-desc"><b>3 gói</b> — 75g carb + 300mg caffeine tổng. Dùng tại km 28, 42, 55.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">Drink Mix 160</div><div class="nutr-row-desc"><b>4 sachets</b> — 160g carb tổng (40g/sachet). Pha 1 sachet/500ml. Start + 3 refills tại CP km 22, 35, 48.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">SaltStick</div><div class="nutr-row-desc"><b>15 caps</b> — 1 cap mỗi 30–45 phút. Nóng → mỗi 30'. Mát → mỗi 45'. Bắt đầu từ km 5.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">Recoverite</div><div class="nutr-row-desc"><b>1 gói</b> Hammer Recoverite — uống trong vòng 30 phút sau finish. Để sẵn trong drop bag hoặc nhờ crew.</div></div>
+        <div class="nutr-row"><div class="nutr-row-label">Gel 100</div><div class="nutr-row-desc"><b>6 gói</b> — 150g carb tổng. Non-caffeine.</div></div>
+        <div class="nutr-row"><div class="nutr-row-label">CAF 100</div><div class="nutr-row-desc"><b>3 gói</b> — 75g carb + 300mg caffeine tổng.</div></div>
+        <div class="nutr-row"><div class="nutr-row-label">Drink Mix 160</div><div class="nutr-row-desc"><b>4 sachets</b> — 160g carb tổng (40g/sachet). Pha 1 sachet/500ml.</div></div>
+        <div class="nutr-row"><div class="nutr-row-label">SaltStick</div><div class="nutr-row-desc"><b>15 caps</b> — 1 cap mỗi 30–45 phút. Nóng → mỗi 30'. Mát → mỗi 45'.</div></div>
+        <div class="nutr-row"><div class="nutr-row-label">Recoverite</div><div class="nutr-row-desc"><b>1 gói</b> Hammer Recoverite — uống trong vòng 30 phút sau finish.</div></div>
         <div class="nutr-row"><div class="nutr-row-label">Soft flask</div><div class="nutr-row-desc"><b>2× 500ml</b> — 1 bình Drink Mix 160 + 1 bình plain water. Refill tại mỗi CP.</div></div>
-        <div class="nutr-tip"><b>Tổng carb mang theo:</b> Gel 225g + Drink Mix 160g + Chuối ~100g (tại CP) + Bữa sáng 70g = <b>~555g carb</b>. Caffeine: <b>300mg</b>. SaltStick: <b>15 caps</b>.</div>
       </div>
 
+      <!-- FUEL PLAN (route-specific) -->
       <div class="nutr-phase">
         <div class="nutr-phase-header">
           <div class="nutr-phase-badge">FUEL PLAN</div>
@@ -348,23 +149,13 @@
             <div class="nutr-phase-dates">Maurten Gel + Drink Mix 160 + Checkpoint Banana</div>
           </div>
         </div>
-        <div class="nutr-row"><div class="nutr-row-label">km 0–5</div><div class="nutr-row-desc">Chưa ăn gel. Đã ăn sáng 60–80g carb lúc 2h30. Uống Drink Mix 160 từ bình 1 — <b>~150ml = ~12g carb</b> ở km 3–4 khi climb lên CP1. SaltStick cap đầu tiên ở km 5.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">km 8–10</div><div class="nutr-row-desc"><b>Maurten Gel 100</b> (25g carb) + tiếp tục uống mix. Chuối tại CP2 nếu có. Ăn trên ridgeline — terrain dễ, bụng ổn định.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">km 15–18</div><div class="nutr-row-desc"><b>Maurten Gel 100</b> (25g carb) + uống mix. Ăn TRƯỚC descent lớn CP3→CP4 (-1,060m). Đừng ăn lúc xuống dốc.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">km 22–25</div><div class="nutr-row-desc"><b>Maurten Gel 100</b> (25g carb) + chuối tại CP. <b>Refill: 1 bình Drink Mix 160 + 1 bình nước lã.</b> Ăn trước khi descent to CP4.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">km 28–30</div><div class="nutr-row-desc"><b>Maurten CAF 100</b> (25g carb + 100mg caffeine). Caffeine gel đầu tiên. Giữa biggest climb CP4→CP5 (+1,120m). Cần energy + mental boost.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">km 35–38</div><div class="nutr-row-desc"><b>Maurten Gel 100</b> (25g carb) + chuối tại CP5. Ăn trước descent to CP6 (-905m). <b>Refill: 1 bình Drink Mix 160 + 1 bình nước lã.</b></div></div>
-        <div class="nutr-row"><div class="nutr-row-label">km 42–45</div><div class="nutr-row-desc"><b>Maurten CAF 100</b> (25g carb + 100mg caffeine). Giữa MONSTER climb CP6→CP7 (+690m). Caffeine cần nhất ở đây. Ăn khi power hike.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">km 48–50</div><div class="nutr-row-desc"><b>Maurten Gel 100</b> (25g carb) + chuối tại CP7. <b>Refill: 1 bình Drink Mix 160 + 1 bình nước lã.</b> Nếu bụng khó chịu → chuyển cả 2 bình sang plain water.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">km 55–58</div><div class="nutr-row-desc"><b>Maurten CAF 100</b> (25g carb + 100mg caffeine). Caffeine cuối cùng. Final climb WS8→CP9. Cần mental push cho 12km cuối.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">km 60–63</div><div class="nutr-row-desc"><b>Maurten Gel 100</b> (25g carb). Gel cuối. Final descent to finish. Nếu buồn nôn → skip gel, chuyển sang plain water + SaltStick.</div></div>
-        <div class="nutr-row"><div class="nutr-row-label">Finish</div><div class="nutr-row-desc"><b>Hammer Recoverite</b> trong vòng 30 phút sau finish. Protein + carb + electrolyte recovery. Để sẵn trong drop bag.</div></div>
-        <div class="nutr-tip"><b>Tổng kết:</b> 9 gels × 25g = <b>225g carb từ gel</b> + 4× Drink Mix 160 = <b>~160g carb từ drink</b> + ~100g từ chuối (4–5 quả) + bữa sáng 70g = <b>~555g carb tổng</b>. Caffeine: 3× 100mg = <b>300mg</b> (từ km 28 trở đi). SaltStick: <b>~15 caps</b> (1 cap/30–45'). Target <b>60–80g carb/hour</b>. Rule: nếu bụng khó chịu → drop drink mix, giữ gel + plain water.</div>
+        <div id="fuel-plan-rows"></div>
+        <div class="nutr-tip" id="fuel-plan-tip"></div>
       </div>
     </div>
   </div>
 
-  <!-- POST-RACE RECOVERY -->
+  <!-- POST-RACE RECOVERY (shared) -->
   <div class="cooldown-section">
     <div class="section-title">POST-RACE RECOVERY</div>
     <div class="section-sub">// finish line → first 24 hours //</div>
@@ -377,23 +168,24 @@
       <div class="cooldown-card">
         <div class="cool-title">Nutrition Window</div>
         <div class="cool-timing">WITHIN 30–45 MIN</div>
-        <div class="cool-desc"><b>3:1 carb:protein</b> trong 30' đầu. Tối thiểu <b>25g protein</b>. Cơm + thịt hoặc mì nóng. Eat whatever you can stomach.</div>
+        <div class="cool-desc"><b>3:1 carb:protein</b> trong 30' đầu. Tối thiểu <b>25g protein</b>. Cơm + thịt hoặc mì nóng.</div>
       </div>
       <div class="cooldown-card">
         <div class="cool-title">Compression + Rest</div>
         <div class="cool-timing">FIRST 2–4 HOURS</div>
-        <div class="cool-desc">Mang <b>compression socks</b> grade 2 (20–30 mmHg). Gác chân cao hơn tim 15'. Ngủ nếu có thể — cơ thể cần recover.</div>
+        <div class="cool-desc">Mang <b>compression socks</b> grade 2 (20–30 mmHg). Gác chân cao hơn tim 15'. Ngủ nếu có thể.</div>
       </div>
       <div class="cooldown-card">
         <div class="cool-title">Cold Water Immersion</div>
         <div class="cool-timing">4–6 HOURS POST</div>
-        <div class="cool-desc">Ngâm chân <b>12–15°C, 10–12'</b>. Giúp giảm inflammation và muscle soreness. Nước suối lạnh tại Mèo Vạc.</div>
+        <div class="cool-desc">Ngâm chân <b>12–15°C, 10–12'</b>. Giúp giảm inflammation và muscle soreness.</div>
       </div>
     </div>
   </div>
 
 </div>
 
+<script src="js/routes.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
