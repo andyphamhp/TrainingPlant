@@ -1,5 +1,5 @@
 /* Created by Andy */
-/* 5000m Gain — Ultra Trail Training Plan */
+/* UTHG 2026 — Trail 70K Race Day */
 
 :root {
   --soil: #1a1410;
@@ -10,7 +10,6 @@
   --sky: #7BB3C4;
   --red: #C0392B;
   --muted: #6b5d4f;
-  --today-border: #E8A03066;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -55,105 +54,11 @@ h1 span { display: block; font-size: 0.45em; color: var(--snow); letter-spacing:
 .stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--summit); line-height: 1; }
 .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 2px; margin-top: 4px; text-transform: uppercase; }
 
-/* LEGEND */
-.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; padding: 10px 16px; background: var(--rock); border-radius: 4px; border: 1px solid #3a3028; }
-.legend-item { display: flex; align-items: center; gap: 6px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+/* DOT (shared) */
 .dot { width: 8px; height: 8px; border-radius: 50%; }
 
-/* WEEK */
-.week { margin-bottom: 32px; }
-.week-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
-.week-badge { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; background: var(--trail); color: var(--soil); padding: 4px 10px; border-radius: 2px; }
-.week-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--snow); }
-.week-dates { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
-.week-line { flex: 1; height: 1px; background: linear-gradient(to right, #3a3028, transparent); }
-
-/* DAY CARDS */
-.days { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
-.day { background: var(--rock); border-radius: 6px; border: 1px solid #3a3028; overflow: hidden; transition: border-color 0.2s; }
-.day:hover { border-color: var(--trail); }
-.day.is-today { border-color: var(--today-border); background: #2a2318; }
-.day.is-today .day-header { background: #3a3020; }
-
-.today-badge { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--summit); background: #E8A03020; border: 1px solid var(--today-border); padding: 2px 7px; border-radius: 10px; }
-
-/* COMPLETED STATE */
-.day.is-done { border-color: #4a674160; background: #1a1f18; }
-.day.is-done .day-header { background: #222a1e; }
-.done-badge { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: #7ab372; background: #7ab37215; border: 1px solid #7ab37240; padding: 2px 7px; border-radius: 10px; }
-.actual-vs-plan { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; padding: 10px; background: #1a1f18; border: 1px solid #4a674130; border-radius: 4px; }
-.avp-header { grid-column: 1 / -1; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; color: #7ab372; text-transform: uppercase; margin-bottom: 2px; border-left: 2px solid #7ab372; padding-left: 7px; }
-.avp-col { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); }
-.avp-col b { color: var(--snow); font-weight: 500; }
-.avp-label { font-size: 8px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
-.avp-over { color: var(--summit); }
-.avp-on { color: #7ab372; }
-
-/* COMPLETE BUTTON */
-.complete-btn { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; background: none; border: 1px solid #4a674140; border-radius: 3px; padding: 7px 10px; color: #7ab372; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; width: 100%; text-transform: uppercase; }
-.complete-btn:hover { background: #7ab37215; border-color: #7ab372; color: #7ab372; }
-.day.is-done .complete-btn { display: none; }
-.done-time { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); margin-top: 6px; letter-spacing: 1px; }
-
-.day-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid #3a3028; gap: 4px; flex-wrap: wrap; }
-.day-name { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; }
-.day-type { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-family: 'DM Mono', monospace; letter-spacing: 1px; font-weight: 500; white-space: nowrap; }
-.type-climb    { background: #8B691422; color: var(--trail); border: 1px solid #8B691440; }
-.type-descent  { background: #C0392B22; color: #e05a4e; border: 1px solid #C0392B40; }
-.type-combo    { background: #4a674122; color: #7ab372; border: 1px solid #4a674140; }
-.type-rest     { background: #7BB3C422; color: var(--sky); border: 1px solid #7BB3C440; }
-.type-strength { background: #9b59b622; color: #c39bd3; border: 1px solid #9b59b640; }
-.type-race     { background: #E8A03022; color: var(--summit); border: 1px solid #E8A03040; }
-
-.day-body { padding: 12px 14px; }
-.workout-name { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1px; color: var(--snow); margin-bottom: 6px; }
-.workout-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
-.metrics { display: flex; gap: 12px; flex-wrap: wrap; }
-.metric { display: flex; align-items: center; gap: 5px; }
-.metric-icon { font-size: 12px; }
-.metric-val { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--snow); font-weight: 500; }
-.metric-unit { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); }
-
-/* TOGGLE */
-.detail-toggle { display: flex; align-items: center; gap: 6px; margin-top: 10px; background: none; border: 1px solid #3a3028; border-radius: 3px; padding: 5px 10px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; cursor: pointer; transition: border-color 0.2s, color 0.2s; width: 100%; justify-content: center; }
-.detail-toggle:hover { border-color: var(--trail); color: var(--snow); }
-.detail-toggle .arrow { display: inline-block; transition: transform 0.25s; font-style: normal; }
-.detail-toggle.open { border-color: var(--trail); color: var(--summit); }
-.detail-toggle.open .arrow { transform: rotate(180deg); }
-
-/* DETAIL PANEL */
-.detail-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-.detail-panel.open { max-height: 1400px; border-top: 1px solid #3a3028; }
-.detail-inner { padding: 14px 14px 16px; }
-.detail-section { margin-bottom: 14px; }
-.detail-section:last-child { margin-bottom: 0; }
-.detail-heading { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--trail); text-transform: uppercase; margin-bottom: 8px; border-left: 2px solid var(--trail); padding-left: 7px; }
-.ex-row { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid #3a3028; align-items: flex-start; }
-.ex-row:last-child { border-bottom: none; }
-.ex-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--trail); line-height: 1; width: 22px; flex-shrink: 0; padding-top: 2px; }
-.ex-content { flex: 1; }
-.ex-name { font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 1px; color: var(--snow); line-height: 1.1; margin-bottom: 3px; }
-.ex-sets { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--summit); letter-spacing: 1px; margin-bottom: 4px; }
-.ex-cue { font-size: 11px; color: var(--muted); line-height: 1.55; }
-.ex-cue b { color: var(--snow); }
-.detail-tip { background: #8B691411; border: 1px solid #8B691430; border-radius: 4px; padding: 8px 10px; font-size: 11px; color: var(--muted); line-height: 1.6; }
-.detail-tip b { color: var(--summit); }
-.phase-row { display: grid; grid-template-columns: 84px 1fr; gap: 0; margin-bottom: 3px; }
-.phase-time { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--sky); padding: 6px 8px 6px 0; border-right: 1px solid #3a3028; }
-.phase-desc { font-size: 11px; color: var(--muted); padding: 6px 0 6px 10px; line-height: 1.5; }
-.phase-desc b { color: var(--snow); }
-
-/* ELEVATION BAR */
-.elev-visual { margin: 36px 0 24px; background: var(--rock); border: 1px solid #3a3028; border-radius: 6px; padding: 20px 24px; }
-.elev-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; margin-bottom: 14px; }
-.bars { display: flex; align-items: flex-end; gap: 3px; height: 64px; }
-.bar-group { display: flex; flex-direction: column; align-items: center; flex: 1; }
-.bar { width: 100%; border-radius: 2px 2px 0 0; transition: opacity 0.2s; }
-.bar:hover { opacity: 0.7; }
-.bar-day-label { font-family: 'DM Mono', monospace; font-size: 7.5px; color: var(--muted); margin-top: 4px; letter-spacing: 0.3px; text-align: center; }
-
 /* COURSE PROFILE */
-.course-section { margin-top: 44px; }
+.course-section { margin-top: 12px; }
 .course-section .section-title { color: var(--summit); }
 .course-profile-box { background: var(--rock); border: 1px solid #3a3028; border-radius: 6px; padding: 20px 24px; margin-bottom: 16px; }
 .course-profile-box svg { display: block; }
@@ -164,6 +69,16 @@ h1 span { display: block; font-size: 0.45em; color: var(--snow); letter-spacing:
 .course-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
 .course-legend-item { display: flex; align-items: center; gap: 6px; }
 .course-legend-swatch { width: 16px; height: 10px; border-radius: 2px; }
+
+/* TABLES */
+.elev-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; margin-bottom: 14px; }
+.seg-table { width: 100%; border-collapse: collapse; }
+.seg-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--trail); text-transform: uppercase; text-align: left; padding: 6px 8px; border-bottom: 1px solid #3a3028; }
+.seg-table td { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); padding: 5px 8px; border-bottom: 1px solid #3a302820; }
+.seg-table td b { color: var(--snow); font-weight: 500; }
+.seg-table tr:hover td { color: var(--snow); }
+
+/* DANGER ZONES */
 .danger-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .danger-col-title { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; padding-left: 7px; }
 .danger-col-title.climb { color: var(--summit); border-left: 2px solid var(--summit); }
@@ -176,16 +91,29 @@ h1 span { display: block; font-size: 0.45em; color: var(--snow); letter-spacing:
 .danger-stats.descent { color: #e05a4e; }
 .danger-note { font-size: 11px; color: var(--muted); line-height: 1.5; flex: 1; }
 .danger-note b { color: var(--snow); }
-.seg-table { width: 100%; border-collapse: collapse; }
-.seg-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--trail); text-transform: uppercase; text-align: left; padding: 6px 8px; border-bottom: 1px solid #3a3028; }
-.seg-table td { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); padding: 5px 8px; border-bottom: 1px solid #3a302820; }
-.seg-table td b { color: var(--snow); font-weight: 500; }
-.seg-table tr:hover td { color: var(--snow); }
 
-/* COOLDOWN */
-.cooldown-section { margin-top: 44px; }
+/* SECTION TITLES */
 .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 3px; color: var(--sky); margin-bottom: 4px; }
 .section-sub { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 2px; margin-bottom: 20px; }
+
+/* RACE STRATEGY */
+.strategy-section { margin-top: 44px; }
+.strategy-section .section-title { color: #7ab372; }
+.strategy-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.strategy-card { background: var(--rock); border: 1px solid #3a3028; border-radius: 6px; padding: 18px 20px; }
+.strategy-card.block-1 { border-left: 3px solid var(--summit); }
+.strategy-card.block-2 { border-left: 3px solid var(--red); }
+.strategy-card.block-3 { border-left: 3px solid var(--sky); }
+.strategy-badge { font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 2px; background: var(--trail); color: var(--soil); padding: 3px 10px; border-radius: 2px; display: inline-block; margin-bottom: 6px; }
+.strategy-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; color: var(--snow); margin-bottom: 4px; }
+.strategy-meta { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-bottom: 10px; }
+.strategy-desc { font-size: 12px; color: var(--muted); line-height: 1.7; margin-bottom: 10px; }
+.strategy-desc b { color: var(--snow); }
+.strategy-tip { background: #7ab37211; border: 1px solid #7ab37230; border-radius: 4px; padding: 8px 10px; font-size: 11px; color: var(--muted); line-height: 1.6; }
+.strategy-tip b { color: #7ab372; }
+
+/* COOLDOWN / POST-RACE */
+.cooldown-section { margin-top: 44px; }
 .cooldown-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
 .cooldown-card { background: var(--rock); border: 1px solid #3a3028; border-radius: 6px; padding: 16px 18px; border-left: 3px solid var(--sky); }
 .cool-title { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1px; color: var(--snow); margin-bottom: 4px; }
@@ -196,13 +124,7 @@ h1 span { display: block; font-size: 0.45em; color: var(--snow); letter-spacing:
 /* NUTRITION */
 .nutrition-section { margin-top: 44px; }
 .nutrition-section .section-title { color: var(--summit); }
-.nutr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
-.nutr-card { background: var(--rock); border: 1px solid #3a3028; border-radius: 6px; padding: 16px 18px; border-left: 3px solid var(--summit); }
-.nutr-title { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1px; color: var(--snow); margin-bottom: 4px; }
-.nutr-timing { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--summit); letter-spacing: 2px; margin-bottom: 8px; }
-.nutr-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
-.nutr-desc b { color: var(--snow); font-weight: 600; }
-.nutr-phases { margin-top: 20px; }
+.nutr-phases { margin-top: 8px; }
 .nutr-phase { background: var(--rock); border: 1px solid #3a3028; border-radius: 6px; padding: 16px 18px; margin-bottom: 12px; }
 .nutr-phase-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
 .nutr-phase-badge { font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 2px; background: var(--summit); color: var(--soil); padding: 3px 10px; border-radius: 2px; white-space: nowrap; }
@@ -215,9 +137,6 @@ h1 span { display: block; font-size: 0.45em; color: var(--snow); letter-spacing:
 .nutr-tip { background: #E8A03008; border: 1px solid #E8A03025; border-radius: 4px; padding: 8px 10px; font-size: 11px; color: var(--muted); line-height: 1.6; margin-top: 10px; }
 .nutr-tip b { color: var(--summit); }
 
-.note { margin-top: 32px; padding: 16px 20px; border: 1px solid #8B691440; border-radius: 6px; background: #8B691411; font-size: 12px; color: var(--muted); line-height: 1.7; }
-.note b { color: var(--summit); }
-
 /* RESPONSIVE */
 
 /* Tablet */
@@ -225,17 +144,12 @@ h1 span { display: block; font-size: 0.45em; color: var(--snow); letter-spacing:
   .wrap { padding: 28px 16px 60px; }
   h1 { letter-spacing: 1px; }
   .stats-bar { grid-template-columns: repeat(2, 1fr); }
-  .legend { gap: 10px; padding: 8px 12px; }
-  .days { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px; }
   .cooldown-grid { grid-template-columns: 1fr 1fr; }
-  .nutr-grid { grid-template-columns: 1fr 1fr; }
   .nutr-row { grid-template-columns: 90px 1fr; }
   .course-stats { grid-template-columns: repeat(3, 1fr); }
   .course-profile-box { padding: 16px; }
   .seg-table { font-size: 9px; }
   .seg-table th, .seg-table td { padding: 4px 6px; }
-  .bars { height: 50px; }
-  .elev-visual { padding: 16px; }
   .section-title { font-size: 26px; }
 }
 
@@ -254,46 +168,6 @@ h1 span { display: block; font-size: 0.45em; color: var(--snow); letter-spacing:
   .stat-val { font-size: 22px; }
   .stat-label { font-size: 8px; }
 
-  .legend { gap: 8px; padding: 8px 10px; }
-  .legend-item { font-size: 9px; }
-
-  .week-header { gap: 8px; }
-  .week-title { font-size: 18px; }
-  .week-badge { font-size: 11px; padding: 3px 8px; }
-
-  .days { grid-template-columns: 1fr; gap: 6px; }
-
-  .day-header { padding: 8px 10px; }
-  .day-name { font-size: 9px; }
-  .day-type { font-size: 9px; padding: 2px 6px; }
-  .day-body { padding: 10px 12px; }
-  .workout-name { font-size: 16px; }
-  .workout-desc { font-size: 11px; }
-  .metrics { gap: 8px; }
-  .metric-val { font-size: 10px; }
-  .metric-unit { font-size: 9px; }
-
-  .phase-row { grid-template-columns: 64px 1fr; }
-  .phase-time { font-size: 9px; padding: 5px 6px 5px 0; }
-  .phase-desc { font-size: 10px; padding: 5px 0 5px 8px; }
-
-  .ex-num { font-size: 16px; width: 18px; }
-  .ex-name { font-size: 13px; }
-  .ex-sets { font-size: 9px; }
-  .ex-cue { font-size: 10px; }
-  .detail-tip { font-size: 10px; padding: 6px 8px; }
-
-  .elev-visual { padding: 14px 12px; }
-  .bars { height: 44px; gap: 2px; }
-  .bar-day-label { font-size: 6px; }
-  .elev-title { font-size: 9px; letter-spacing: 2px; }
-
-  .cooldown-grid { grid-template-columns: 1fr; gap: 8px; }
-  .cooldown-card { padding: 12px 14px; }
-  .cool-title { font-size: 14px; }
-  .cool-timing { font-size: 9px; }
-  .cool-desc { font-size: 11px; }
-
   .course-stats { grid-template-columns: repeat(3, 1fr); gap: 6px; }
   .course-stat { padding: 8px; }
   .course-stat-val { font-size: 20px; }
@@ -307,11 +181,17 @@ h1 span { display: block; font-size: 0.45em; color: var(--snow); letter-spacing:
   .seg-table th { font-size: 8px; }
   .seg-table td { font-size: 9px; padding: 4px 5px; }
 
-  .nutr-grid { grid-template-columns: 1fr; gap: 8px; }
-  .nutr-card { padding: 12px 14px; }
-  .nutr-title { font-size: 14px; }
-  .nutr-timing { font-size: 9px; }
-  .nutr-desc { font-size: 11px; }
+  .strategy-title { font-size: 18px; }
+  .strategy-card { padding: 14px 16px; }
+  .strategy-desc { font-size: 11px; }
+  .strategy-meta { font-size: 9px; }
+
+  .cooldown-grid { grid-template-columns: 1fr; gap: 8px; }
+  .cooldown-card { padding: 12px 14px; }
+  .cool-title { font-size: 14px; }
+  .cool-timing { font-size: 9px; }
+  .cool-desc { font-size: 11px; }
+
   .nutr-phase { padding: 12px 14px; }
   .nutr-phase-title { font-size: 16px; }
   .nutr-row { grid-template-columns: 72px 1fr; }
@@ -321,6 +201,4 @@ h1 span { display: block; font-size: 0.45em; color: var(--snow); letter-spacing:
 
   .section-title { font-size: 24px; letter-spacing: 2px; }
   .section-sub { font-size: 10px; }
-
-  .note { padding: 12px 14px; font-size: 11px; }
 }

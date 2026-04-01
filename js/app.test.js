@@ -1,16 +1,12 @@
 // Created by Andy
-// Unit tests for Training Plant app
+// Unit tests for UTHG 2026 Trail 70K Race Day app
 
 /**
  * @jest-environment jsdom
  */
 
 const {
-  computeCountdown, getTodayDateString, highlightToday, toggleDetail,
-  getCompletedWorkouts, saveCompletedWorkout, removeCompletedWorkout,
-  markCardDone, unmarkCardDone, STORAGE_KEY,
-  fetchCompletedFromAPI, syncWorkoutToAPI, removeWorkoutFromAPI, syncOnLoad,
-  API_BASE
+  computeCountdown, computeElapsed, RACE_DATE, CUTOFF_DATE
 } = require('./app');
 
 // ─── computeCountdown ───────────────────────────────────────
@@ -56,367 +52,65 @@ describe('computeCountdown', () => {
   });
 });
 
-// ─── getTodayDateString ─────────────────────────────────────
+// ─── computeElapsed ─────────────────────────────────────────
 
-describe('getTodayDateString', () => {
-  test('formats 21/3/2026 as 2026-03-21', () => {
-    const date = new Date(2026, 2, 21); // month is 0-indexed
-    expect(getTodayDateString(date)).toBe('2026-03-21');
+describe('computeElapsed', () => {
+  const race = new Date('2026-04-04T04:00:00+07:00');
+  const cutoff = new Date('2026-04-05T04:00:00+07:00');
+
+  test('returns null before race starts', () => {
+    const now = new Date('2026-04-03T23:00:00+07:00');
+    expect(computeElapsed(now, race, cutoff)).toBeNull();
   });
 
-  test('pads single-digit month and day', () => {
-    const date = new Date(2026, 0, 5); // Jan 5
-    expect(getTodayDateString(date)).toBe('2026-01-05');
+  test('returns elapsed time during race', () => {
+    const now = new Date('2026-04-04T14:30:00+07:00'); // 10h30m into race
+    const el = computeElapsed(now, race, cutoff);
+    expect(el).not.toBeNull();
+    expect(el.hours).toBe(10);
+    expect(el.mins).toBe(30);
+    expect(el.secs).toBe(0);
   });
 
-  test('handles month boundary (April)', () => {
-    const date = new Date(2026, 3, 4); // Apr 4
-    expect(getTodayDateString(date)).toBe('2026-04-04');
+  test('returns elapsed time at race start', () => {
+    const now = new Date('2026-04-04T04:00:01+07:00'); // 1 second in
+    const el = computeElapsed(now, race, cutoff);
+    expect(el).not.toBeNull();
+    expect(el.hours).toBe(0);
+    expect(el.mins).toBe(0);
+    expect(el.secs).toBe(1);
   });
 
-  test('handles Dec 31', () => {
-    const date = new Date(2026, 11, 31);
-    expect(getTodayDateString(date)).toBe('2026-12-31');
-  });
-});
-
-// ─── highlightToday ─────────────────────────────────────────
-
-describe('highlightToday', () => {
-  beforeEach(() => {
-    document.body.innerHTML = `
-      <div class="day" data-date="2026-03-20">
-        <div class="day-header">
-          <span class="day-name">FRI 20/3 · D1</span>
-          <span class="day-type type-climb">CLIMB</span>
-        </div>
-        <div class="day-body"></div>
-      </div>
-      <div class="day" data-date="2026-03-21">
-        <div class="day-header">
-          <span class="day-name">SAT 21/3 · D2</span>
-          <span class="day-type type-strength">STRENGTH</span>
-        </div>
-        <div class="day-body"></div>
-      </div>
-      <div class="day" data-date="2026-03-22">
-        <div class="day-header">
-          <span class="day-name">SUN 22/3 · D3</span>
-          <span class="day-type type-combo">COMBO</span>
-        </div>
-        <div class="day-body"></div>
-      </div>
-    `;
+  test('returns null after cutoff', () => {
+    const now = new Date('2026-04-05T05:00:00+07:00');
+    expect(computeElapsed(now, race, cutoff)).toBeNull();
   });
 
-  test('adds is-today class and TODAY badge to matching date card', () => {
-    highlightToday(new Date(2026, 2, 21)); // March 21
-
-    const cards = document.querySelectorAll('.day');
-    expect(cards[0].classList.contains('is-today')).toBe(false);
-    expect(cards[1].classList.contains('is-today')).toBe(true);
-    expect(cards[2].classList.contains('is-today')).toBe(false);
-
-    const badge = cards[1].querySelector('.today-badge');
-    expect(badge).not.toBeNull();
-    expect(badge.textContent).toBe('TODAY');
+  test('returns elapsed just before cutoff', () => {
+    const now = new Date('2026-04-05T03:59:59+07:00');
+    const el = computeElapsed(now, race, cutoff);
+    expect(el).not.toBeNull();
+    expect(el.hours).toBe(23);
+    expect(el.mins).toBe(59);
+    expect(el.secs).toBe(59);
   });
 
-  test('does not add badge to non-matching cards', () => {
-    highlightToday(new Date(2026, 2, 21));
-
-    expect(document.querySelectorAll('.today-badge').length).toBe(1);
-  });
-
-  test('no card highlighted when date matches none', () => {
-    highlightToday(new Date(2026, 5, 15)); // June 15
-
-    const cards = document.querySelectorAll('.day');
-    cards.forEach(card => {
-      expect(card.classList.contains('is-today')).toBe(false);
-    });
-    expect(document.querySelectorAll('.today-badge').length).toBe(0);
-  });
-
-  test('moves highlight when called with a different date', () => {
-    highlightToday(new Date(2026, 2, 20)); // March 20
-    const cards = document.querySelectorAll('.day');
-    expect(cards[0].classList.contains('is-today')).toBe(true);
-    expect(cards[1].classList.contains('is-today')).toBe(false);
-
-    highlightToday(new Date(2026, 2, 21)); // March 21
-    expect(cards[0].classList.contains('is-today')).toBe(false);
-    expect(cards[1].classList.contains('is-today')).toBe(true);
-
-    // Old badge removed, new one added
-    expect(cards[0].querySelector('.today-badge')).toBeNull();
-    expect(cards[1].querySelector('.today-badge')).not.toBeNull();
-  });
-
-  test('does not duplicate badge on repeated calls for same date', () => {
-    highlightToday(new Date(2026, 2, 21));
-    highlightToday(new Date(2026, 2, 21));
-    highlightToday(new Date(2026, 2, 21));
-
-    expect(document.querySelectorAll('.today-badge').length).toBe(1);
+  test('totalMs and cutoffMs are correct', () => {
+    const now = new Date('2026-04-04T05:00:00+07:00'); // 1h into race
+    const el = computeElapsed(now, race, cutoff);
+    expect(el.totalMs).toBe(3600000);
+    expect(el.cutoffMs).toBe(86400000); // 24h
   });
 });
 
-// ─── toggleDetail ───────────────────────────────────────────
+// ─── Constants ──────────────────────────────────────────────
 
-describe('toggleDetail', () => {
-  beforeEach(() => {
-    document.body.innerHTML = `
-      <div class="day">
-        <div class="day-body">
-          <button class="detail-toggle"><i class="arrow">▼</i> SHOW DETAIL</button>
-        </div>
-        <div class="detail-panel">
-          <div class="detail-inner">Content here</div>
-        </div>
-      </div>
-    `;
+describe('constants', () => {
+  test('RACE_DATE is April 4, 2026 at 04:00 UTC+7', () => {
+    expect(RACE_DATE).toBe('2026-04-04T04:00:00+07:00');
   });
 
-  test('opens panel on first click', () => {
-    const btn = document.querySelector('.detail-toggle');
-    toggleDetail(btn);
-
-    const panel = document.querySelector('.detail-panel');
-    expect(panel.classList.contains('open')).toBe(true);
-    expect(btn.classList.contains('open')).toBe(true);
-    expect(btn.textContent).toContain('HIDE DETAIL');
-  });
-
-  test('closes panel on second click', () => {
-    const btn = document.querySelector('.detail-toggle');
-    toggleDetail(btn); // open
-    toggleDetail(btn); // close
-
-    const panel = document.querySelector('.detail-panel');
-    expect(panel.classList.contains('open')).toBe(false);
-    expect(btn.classList.contains('open')).toBe(false);
-    expect(btn.textContent).toContain('SHOW DETAIL');
-  });
-
-  test('toggle cycle works correctly across multiple clicks', () => {
-    const btn = document.querySelector('.detail-toggle');
-    const panel = document.querySelector('.detail-panel');
-
-    for (let i = 0; i < 5; i++) {
-      toggleDetail(btn);
-      expect(panel.classList.contains('open')).toBe(true);
-      toggleDetail(btn);
-      expect(panel.classList.contains('open')).toBe(false);
-    }
-  });
-});
-
-// ─── Workout Completion ─────────────────────────────────────
-
-describe('workout completion - localStorage', () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
-
-  test('getCompletedWorkouts returns empty object when no data', () => {
-    expect(getCompletedWorkouts()).toEqual({});
-  });
-
-  test('saveCompletedWorkout stores date and timestamp', () => {
-    saveCompletedWorkout('2026-03-21', '2026-03-21T15:30:00Z');
-    const completed = getCompletedWorkouts();
-    expect(completed['2026-03-21']).toBe('2026-03-21T15:30:00Z');
-  });
-
-  test('saveCompletedWorkout handles multiple dates', () => {
-    saveCompletedWorkout('2026-03-20', '2026-03-20T10:00:00Z');
-    saveCompletedWorkout('2026-03-21', '2026-03-21T15:30:00Z');
-    const completed = getCompletedWorkouts();
-    expect(Object.keys(completed).length).toBe(2);
-    expect(completed['2026-03-20']).toBe('2026-03-20T10:00:00Z');
-    expect(completed['2026-03-21']).toBe('2026-03-21T15:30:00Z');
-  });
-
-  test('removeCompletedWorkout deletes the entry', () => {
-    saveCompletedWorkout('2026-03-21', '2026-03-21T15:30:00Z');
-    removeCompletedWorkout('2026-03-21');
-    const completed = getCompletedWorkouts();
-    expect(completed['2026-03-21']).toBeUndefined();
-  });
-
-  test('removeCompletedWorkout does not affect other entries', () => {
-    saveCompletedWorkout('2026-03-20', '2026-03-20T10:00:00Z');
-    saveCompletedWorkout('2026-03-21', '2026-03-21T15:30:00Z');
-    removeCompletedWorkout('2026-03-20');
-    const completed = getCompletedWorkouts();
-    expect(completed['2026-03-20']).toBeUndefined();
-    expect(completed['2026-03-21']).toBe('2026-03-21T15:30:00Z');
-  });
-});
-
-describe('workout completion - DOM', () => {
-  beforeEach(() => {
-    localStorage.clear();
-    document.body.innerHTML = `
-      <div class="day" data-date="2026-03-21">
-        <div class="day-header">
-          <span class="day-name">SAT 21/3 · D2</span>
-          <span class="day-type type-strength">STRENGTH</span>
-        </div>
-        <div class="day-body">
-          <div class="workout-name">Eccentric Quads</div>
-        </div>
-      </div>
-      <div class="day" data-date="2026-03-22">
-        <div class="day-header">
-          <span class="day-name">SUN 22/3 · D3</span>
-          <span class="day-type type-combo">COMBO</span>
-        </div>
-        <div class="day-body">
-          <div class="workout-name">Hill Loop Run</div>
-        </div>
-      </div>
-    `;
-  });
-
-  test('markCardDone adds is-done class and DONE badge', () => {
-    const card = document.querySelector('[data-date="2026-03-21"]');
-    markCardDone(card, '2026-03-21T15:30:00Z');
-
-    expect(card.classList.contains('is-done')).toBe(true);
-    expect(card.querySelector('.done-badge')).not.toBeNull();
-    expect(card.querySelector('.done-badge').textContent).toBe('DONE');
-  });
-
-  test('markCardDone adds completion timestamp', () => {
-    const card = document.querySelector('[data-date="2026-03-21"]');
-    markCardDone(card, '2026-03-21T15:30:00Z');
-
-    const timeEl = card.querySelector('.done-time');
-    expect(timeEl).not.toBeNull();
-    expect(timeEl.textContent).toContain('Completed');
-  });
-
-  test('markCardDone does not duplicate badge on repeated calls', () => {
-    const card = document.querySelector('[data-date="2026-03-21"]');
-    markCardDone(card, '2026-03-21T15:30:00Z');
-    markCardDone(card, '2026-03-21T15:30:00Z');
-
-    expect(card.querySelectorAll('.done-badge').length).toBe(1);
-    expect(card.querySelectorAll('.done-time').length).toBe(1);
-  });
-
-  test('unmarkCardDone removes is-done class, badge, and timestamp', () => {
-    const card = document.querySelector('[data-date="2026-03-21"]');
-    markCardDone(card, '2026-03-21T15:30:00Z');
-    unmarkCardDone(card);
-
-    expect(card.classList.contains('is-done')).toBe(false);
-    expect(card.querySelector('.done-badge')).toBeNull();
-    expect(card.querySelector('.done-time')).toBeNull();
-  });
-
-  test('marking one card done does not affect others', () => {
-    const card1 = document.querySelector('[data-date="2026-03-21"]');
-    const card2 = document.querySelector('[data-date="2026-03-22"]');
-    markCardDone(card1, '2026-03-21T15:30:00Z');
-
-    expect(card1.classList.contains('is-done')).toBe(true);
-    expect(card2.classList.contains('is-done')).toBe(false);
-    expect(card2.querySelector('.done-badge')).toBeNull();
-  });
-});
-
-// ─── API Sync Layer ─────────────────────────────────────────
-
-describe('API sync layer', () => {
-  beforeEach(() => {
-    localStorage.clear();
-    global.fetch = jest.fn();
-  });
-
-  afterEach(() => {
-    delete global.fetch;
-  });
-
-  test('fetchCompletedFromAPI returns parsed JSON on success', async () => {
-    const mockData = { '2026-03-20': '2026-03-20T10:00:00Z' };
-    global.fetch.mockResolvedValue({ ok: true, json: () => Promise.resolve(mockData) });
-
-    const result = await fetchCompletedFromAPI();
-    expect(result).toEqual(mockData);
-    expect(global.fetch).toHaveBeenCalledWith(API_BASE, expect.objectContaining({
-      headers: expect.objectContaining({ 'X-API-Key': expect.any(String) }),
-    }));
-  });
-
-  test('fetchCompletedFromAPI returns null on network error', async () => {
-    global.fetch.mockRejectedValue(new Error('Network error'));
-
-    const result = await fetchCompletedFromAPI();
-    expect(result).toBeNull();
-  });
-
-  test('syncWorkoutToAPI sends PUT with correct body and headers', async () => {
-    global.fetch.mockResolvedValue({ ok: true });
-
-    await syncWorkoutToAPI('2026-03-21', '2026-03-21T15:30:00Z');
-    expect(global.fetch).toHaveBeenCalledWith(API_BASE, expect.objectContaining({
-      method: 'PUT',
-      headers: expect.objectContaining({ 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ date: '2026-03-21', timestamp: '2026-03-21T15:30:00Z' }),
-    }));
-  });
-
-  test('removeWorkoutFromAPI sends DELETE with correct body and headers', async () => {
-    global.fetch.mockResolvedValue({ ok: true });
-
-    await removeWorkoutFromAPI('2026-03-21');
-    expect(global.fetch).toHaveBeenCalledWith(API_BASE, expect.objectContaining({
-      method: 'DELETE',
-      headers: expect.objectContaining({ 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ date: '2026-03-21' }),
-    }));
-  });
-
-  test('syncOnLoad merges API data into localStorage and re-renders cards', async () => {
-    document.body.innerHTML = `
-      <div class="day" data-date="2026-03-20">
-        <div class="day-header"><span class="day-name">D1</span></div>
-        <div class="day-body"></div>
-      </div>
-      <div class="day" data-date="2026-03-21">
-        <div class="day-header"><span class="day-name">D2</span></div>
-        <div class="day-body"></div>
-      </div>
-    `;
-    saveCompletedWorkout('2026-03-21', '2026-03-21T12:00:00Z');
-
-    const apiData = {
-      '2026-03-20': '2026-03-20T10:00:00Z',
-      '2026-03-21': '2026-03-21T15:00:00Z',
-    };
-    global.fetch.mockResolvedValue({ ok: true, json: () => Promise.resolve(apiData) });
-
-    await syncOnLoad();
-
-    const completed = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    expect(completed['2026-03-20']).toBe('2026-03-20T10:00:00Z');
-    // API wins over local
-    expect(completed['2026-03-21']).toBe('2026-03-21T15:00:00Z');
-
-    const card1 = document.querySelector('[data-date="2026-03-20"]');
-    expect(card1.classList.contains('is-done')).toBe(true);
-  });
-
-  test('syncOnLoad handles API failure gracefully (localStorage preserved)', async () => {
-    saveCompletedWorkout('2026-03-21', '2026-03-21T12:00:00Z');
-    global.fetch.mockRejectedValue(new Error('Network error'));
-
-    await syncOnLoad();
-
-    const completed = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    expect(completed['2026-03-21']).toBe('2026-03-21T12:00:00Z');
+  test('CUTOFF_DATE is April 5, 2026 at 04:00 UTC+7 (24h)', () => {
+    expect(CUTOFF_DATE).toBe('2026-04-05T04:00:00+07:00');
   });
 });
