@@ -136,9 +136,6 @@ function renderElevationSVG() {
   svg += '<polygon points="' + e.polygon + '" fill="url(#elevGrad)" opacity="0.6"/>';
   svg += '<polyline points="' + e.polyline + '" fill="none" stroke="#E8A030" stroke-width="1.5" stroke-linejoin="round"/>';
 
-  // Gradient def
-  svg += '<defs><linearGradient id="elevGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E8A030" stop-opacity="0.4"/><stop offset="100%" stop-color="#E8A030" stop-opacity="0.05"/></linearGradient></defs>';
-
   // Markers
   svg += '<circle cx="' + e.startX + '" cy="' + e.startY + '" r="3" fill="#7ab372"/>';
   svg += '<text x="' + (e.startX + 6) + '" y="' + (e.startY - 6) + '" fill="#7ab372" font-size="8" font-family="DM Mono,monospace">START ' + e.startElev + 'm</text>';
@@ -149,7 +146,16 @@ function renderElevationSVG() {
   svg += '<circle cx="' + e.lowX + '" cy="' + e.lowY + '" r="2.5" fill="#7BB3C4"/>';
   svg += '<text x="' + (e.lowX + 5) + '" y="' + (e.lowY + 10) + '" fill="#7BB3C4" font-size="7" font-family="DM Mono,monospace">' + e.lowElev + 'm</text>';
 
-  document.getElementById('elevation-svg').innerHTML = svg;
+  // Parse SVG content via a temp container to get proper SVG namespace nodes
+  var svgEl = document.getElementById('elevation-svg');
+  // Keep the <defs> element, remove everything else
+  var defs = svgEl.querySelector('defs');
+  while (svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
+  if (defs) svgEl.appendChild(defs);
+  // Parse new SVG content
+  var tmp = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  tmp.innerHTML = svg;
+  while (tmp.firstChild) svgEl.appendChild(tmp.firstChild);
 }
 
 function renderSegments() {
